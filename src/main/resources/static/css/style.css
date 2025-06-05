@@ -1,0 +1,47 @@
+/* Custom CSS - Minimal overrides for Bootstrap */
+/* This file is loaded - if you see the red border, CSS is working */
+
+/* Debug indicator - remove in production */
+.navbar-brand {
+    border: 2px solid transparent;
+    border-radius: 4px;
+    padding: 4px 8px;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    border-color: #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Ensure footer stays at bottom */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+/* Additional visual enhancements */
+.card {
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Custom button styles */
+.btn {
+    transition: all 0.2s ease;
+}
+
+/* Table row hover effect */
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Additional custom styles can be added here */

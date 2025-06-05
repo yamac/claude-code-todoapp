@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(${todo.id != null ? 'Edit TODO' : 'New TODO'}, ~{::content})}">
+<head>
+    <title th:text="${todo.id != null ? 'Edit TODO' : 'New TODO'}">TODO Form</title>
+</head>
+<body>
+    <div th:fragment="content">
+            <div class="container my-5">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="mb-0">
+                                    <i th:class="${todo.id != null ? 'bi bi-pencil-square' : 'bi bi-plus-circle'}"></i>
+                                    <span th:text="${todo.id != null ? 'Edit TODO' : 'Create New TODO'}"></span>
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <form th:action="${todo.id != null ? '/todo/' + todo.id : '/todo'}" method="post">
+                                    <div class="mb-3">
+                                        <label for="title" class="form-label">
+                                            Title <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" 
+                                               class="form-control form-control-lg" 
+                                               id="title" 
+                                               name="title" 
+                                               th:value="${todo.title}" 
+                                               required 
+                                               maxlength="255" 
+                                               placeholder="Enter TODO title"
+                                               autofocus>
+                                        <div class="form-text">Required field. Maximum 255 characters.</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea class="form-control" 
+                                                  id="description" 
+                                                  name="description" 
+                                                  rows="4" 
+                                                  placeholder="Enter TODO description (optional)"
+                                                  th:text="${todo.description}"></textarea>
+                                        <div class="form-text">Optional. Provide more details about this TODO.</div>
+                                    </div>
+                                    
+                                    <div class="mb-4" th:if="${todo.id != null}">
+                                        <div class="form-check">
+                                            <input type="checkbox" 
+                                                   class="form-check-input" 
+                                                   id="completed"
+                                                   name="completed" 
+                                                   th:checked="${todo.completed}">
+                                            <label class="form-check-label" for="completed">
+                                                <i class="bi bi-check-circle"></i> Mark as completed
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i th:class="${todo.id != null ? 'bi bi-save' : 'bi bi-plus-circle'}"></i>
+                                            <span th:text="${todo.id != null ? 'Update TODO' : 'Create TODO'}"></span>
+                                        </button>
+                                        <a th:href="@{/}" class="btn btn-secondary">
+                                            <i class="bi bi-x-circle"></i> Cancel
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
