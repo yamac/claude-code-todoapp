@@ -28,3 +28,6 @@ application-local.properties
 *.db
 *.mv.db
 *.trace.db
+
+# Claude Code settings
+.claude/
