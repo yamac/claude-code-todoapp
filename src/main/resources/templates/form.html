@@ -7,8 +7,8 @@
     <div th:fragment="content">
             <div class="container my-5">
                 <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <div class="card shadow-sm">
+                    <div class="col-lg-8 col-md-10 mx-auto">
+                        <div class="card shadow-sm animate-card">
                             <div class="card-header bg-primary text-white">
                                 <h3 class="mb-0">
                                     <i th:class="${todo.id != null ? 'bi bi-pencil-square' : 'bi bi-plus-circle'}"></i>
@@ -58,11 +58,11 @@
                                     </div>
                                     
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary btn-lg-md">
                                             <i th:class="${todo.id != null ? 'bi bi-save' : 'bi bi-plus-circle'}"></i>
                                             <span th:text="${todo.id != null ? 'Update TODO' : 'Create TODO'}"></span>
                                         </button>
-                                        <a th:href="@{/}" class="btn btn-secondary">
+                                        <a th:href="@{/}" class="btn btn-secondary btn-lg-md">
                                             <i class="bi bi-x-circle"></i> Cancel
                                         </a>
                                     </div>

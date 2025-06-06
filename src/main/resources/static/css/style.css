@@ -45,3 +45,190 @@ main {
 }
 
 /* Additional custom styles can be added here */
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    /* Mobile-friendly table */
+    .table-responsive-stack tr {
+        display: block;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+    
+    .table-responsive-stack td {
+        display: block;
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+    
+    .table-responsive-stack td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 6px;
+        width: 45%;
+        text-align: left;
+        font-weight: bold;
+    }
+    
+    /* Hide table headers on mobile */
+    .table-responsive-stack thead {
+        display: none;
+    }
+    
+    /* Adjust button spacing on mobile */
+    .btn-group-vertical .btn {
+        margin-bottom: 5px;
+    }
+    
+    /* Smaller padding for cards on mobile */
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Apply animations */
+.todo-item {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.card {
+    animation: slideIn 0.4s ease-out;
+}
+
+.animate-card {
+    animation: slideIn 0.4s ease-out;
+}
+
+/* Button hover animations */
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Checkbox animation */
+.form-check-input {
+    transition: all 0.2s ease;
+}
+
+.form-check-input:checked {
+    animation: pulse 0.3s ease;
+}
+
+/* Toast notification animation */
+.toast {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Loading spinner */
+.spinner-border {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Smooth transitions for todo status changes */
+.todo-completed {
+    opacity: 0.6;
+    text-decoration: line-through;
+    transition: all 0.3s ease;
+}
+
+/* Mobile-first responsive utilities */
+@media (max-width: 576px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+    
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Tablet responsive adjustments */
+@media (min-width: 768px) and (max-width: 991px) {
+    .container {
+        max-width: 100%;
+        padding: 0 30px;
+    }
+}
+
+/* Improve form responsiveness */
+@media (max-width: 576px) {
+    .form-label {
+        font-size: 0.9rem;
+    }
+    
+    .form-control,
+    .form-select {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+}
+
+/* Touch-friendly interactive elements */
+@media (hover: none) and (pointer: coarse) {
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+    
+    .form-check-input {
+        width: 1.5em;
+        height: 1.5em;
+    }
+}
