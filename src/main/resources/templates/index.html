@@ -28,6 +28,8 @@
                                     <div class="todo-content">
                                         <h5 class="todo-title" th:text="${todo.title}"></h5>
                                         <p class="todo-description" th:text="${todo.description != null && !todo.description.isEmpty() ? todo.description : ''}"></p>
+                                    </div>
+                                    <div class="todo-date-wrapper">
                                         <small class="todo-date" th:text="${#temporals.format(todo.createdAt, 'yyyy/MM/dd')}"></small>
                                     </div>
                                     <div class="todo-actions">

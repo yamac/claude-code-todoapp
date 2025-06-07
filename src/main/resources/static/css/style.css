@@ -99,6 +99,13 @@ h2 {
     -webkit-box-orient: vertical;
 }
 
+/* Date positioning */
+.todo-date-wrapper {
+    position: absolute;
+    bottom: 1rem;
+    left: 1.5rem;
+}
+
 .todo-date {
     color: #6c757d;
     font-size: 0.875rem;
