@@ -1,47 +1,92 @@
-/* Custom CSS - Minimal overrides for Bootstrap */
-/* This file is loaded - if you see the red border, CSS is working */
-
-/* Debug indicator - remove in production */
-.navbar-brand {
-    border: 2px solid transparent;
-    border-radius: 4px;
-    padding: 4px 8px;
-    transition: all 0.3s ease;
-}
-
-.navbar-brand:hover {
-    border-color: #007bff;
-    background-color: rgba(0, 123, 255, 0.1);
-}
+/* Custom CSS for TODO Application */
 
 /* Ensure footer stays at bottom */
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: #f8f9fa;
 }
 
 main {
     flex: 1;
 }
 
-/* Additional visual enhancements */
-.card {
-    transition: box-shadow 0.3s ease;
+/* Header styles */
+h2 {
+    font-weight: 300;
+    color: #333;
 }
 
-.card:hover {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+/* Todo list table styles */
+.todo-list {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Custom button styles */
+.todo-list table {
+    margin-bottom: 0;
+}
+
+.todo-list th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 500;
+    color: #495057;
+    padding: 12px;
+}
+
+.todo-list td {
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.todo-list tr.completed td {
+    text-decoration: line-through;
+    color: #6c757d;
+    opacity: 0.7;
+}
+
+/* Checkbox styles */
+.form-check-input {
+    width: 1.2em;
+    height: 1.2em;
+    margin: 0;
+}
+
+/* Button styles */
 .btn {
     transition: all 0.2s ease;
 }
 
-/* Table row hover effect */
-.table-hover tbody tr:hover {
-    background-color: rgba(0, 123, 255, 0.05);
+.btn-primary.rounded-circle {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Additional custom styles can be added here */
+.btn-primary.rounded-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Empty state styles */
+.card {
+    border: none;
+    border-radius: 8px;
+}
+
+/* Navbar customization */
+.navbar-brand {
+    font-weight: 300;
+    font-size: 1.5rem;
+}
+
+/* Footer styles */
+footer {
+    background-color: #343a40;
+    color: #adb5bd;
+    padding: 1rem 0;
+    font-size: 0.875rem;
+}

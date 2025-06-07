@@ -9,20 +9,17 @@
                 <div class="row">
                     <div class="col-lg-8 mx-auto">
                         <div class="card shadow-sm">
-                            <div class="card-header bg-primary text-white">
-                                <h3 class="mb-0">
-                                    <i th:class="${todo.id != null ? 'bi bi-pencil-square' : 'bi bi-plus-circle'}"></i>
+                            <div class="card-body">
+                                <h3 class="mb-4">
                                     <span th:text="${todo.id != null ? 'Edit TODO' : 'Create New TODO'}"></span>
                                 </h3>
-                            </div>
-                            <div class="card-body">
                                 <form th:action="${todo.id != null ? '/todo/' + todo.id : '/todo'}" method="post">
                                     <div class="mb-3">
                                         <label for="title" class="form-label">
                                             Title <span class="text-danger">*</span>
                                         </label>
                                         <input type="text" 
-                                               class="form-control form-control-lg" 
+                                               class="form-control" 
                                                id="title" 
                                                name="title" 
                                                th:value="${todo.title}" 
@@ -57,14 +54,13 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i th:class="${todo.id != null ? 'bi bi-save' : 'bi bi-plus-circle'}"></i>
-                                            <span th:text="${todo.id != null ? 'Update TODO' : 'Create TODO'}"></span>
-                                        </button>
-                                        <a th:href="@{/}" class="btn btn-secondary">
-                                            <i class="bi bi-x-circle"></i> Cancel
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <a th:href="@{/}" class="btn btn-outline-secondary">
+                                            Cancel
                                         </a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <span th:text="${todo.id != null ? 'Update' : 'Create'}"></span>
+                                        </button>
                                     </div>
                                 </form>
                             </div>
