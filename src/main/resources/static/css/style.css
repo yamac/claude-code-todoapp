@@ -18,11 +18,9 @@ h2 {
     color: #333;
 }
 
-/* Todo card styles */
-.todo-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+/* Todo grid styles */
+.todo-grid {
+    margin: 0 -0.5rem;
 }
 
 .todo-card {
@@ -32,6 +30,8 @@ h2 {
     padding: 1.5rem;
     position: relative;
     transition: all 0.2s ease;
+    height: 100%;
+    min-height: 200px;
 }
 
 .todo-card:hover {
@@ -77,6 +77,7 @@ h2 {
 /* Content styling */
 .todo-content {
     padding-right: 3rem;
+    padding-bottom: 2.5rem;
 }
 
 .todo-title {
@@ -91,6 +92,11 @@ h2 {
     color: #6c757d;
     margin-bottom: 0.5rem;
     line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 .todo-date {
@@ -130,6 +136,13 @@ h2 {
 .btn-primary.rounded-circle:hover {
     transform: scale(1.1);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .todo-grid {
+        margin: 0;
+    }
 }
 
 /* Empty state styles */
