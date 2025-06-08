@@ -16,7 +16,7 @@
                         </div>
                         
                         <div class="row todo-grid" id="todoGrid" th:if="${!todos.isEmpty()}">
-                            <div class="col-lg-6 col-md-12 mb-3 todo-item" th:each="todo : ${todos}" th:data-id="${todo.id}">
+                            <div class="col-lg-6 col-md-12 mb-3 todo-item" th:each="todo : ${todos}" th:data-id="${todo.id}" draggable="true">
                                 <div class="todo-card" th:classappend="${todo.completed ? 'completed' : ''}">
                                     <div class="drag-handle" title="Drag to reorder">
                                         <i class="bi bi-grip-vertical"></i>
@@ -81,36 +81,36 @@
                 const todoItems = todoGrid.querySelectorAll('.todo-item');
                 
                 todoItems.forEach(item => {
-                    const dragHandle = item.querySelector('.drag-handle');
-                    
-                    dragHandle.addEventListener('mousedown', function(e) {
-                        item.draggable = true;
-                        item.style.cursor = 'grabbing';
-                    });
-                    
                     item.addEventListener('dragstart', function(e) {
+                        console.log('Drag started for:', this.getAttribute('data-id'));
                         draggedElement = this;
-                        this.style.opacity = '0.5';
+                        this.classList.add('dragging');
                         
                         // Create placeholder
                         placeholder = document.createElement('div');
                         placeholder.className = 'col-lg-6 col-md-12 mb-3 drag-placeholder';
                         placeholder.innerHTML = '<div class="todo-card placeholder-card">Drop here</div>';
+                        
+                        e.dataTransfer.effectAllowed = 'move';
+                        e.dataTransfer.setData('text/html', this.outerHTML);
                     });
                     
                     item.addEventListener('dragend', function(e) {
-                        this.style.opacity = '';
-                        this.style.cursor = '';
-                        this.draggable = false;
+                        console.log('Drag ended');
+                        this.classList.remove('dragging');
                         
                         if (placeholder && placeholder.parentNode) {
                             placeholder.parentNode.removeChild(placeholder);
                         }
+                        placeholder = null;
+                        draggedElement = null;
                     });
                     
                     item.addEventListener('dragover', function(e) {
                         e.preventDefault();
-                        if (this !== draggedElement) {
+                        e.dataTransfer.dropEffect = 'move';
+                        
+                        if (this !== draggedElement && placeholder) {
                             const rect = this.getBoundingClientRect();
                             const midY = rect.top + rect.height / 2;
                             
@@ -124,8 +124,9 @@
                     
                     item.addEventListener('drop', function(e) {
                         e.preventDefault();
+                        console.log('Drop occurred');
                         
-                        if (placeholder && placeholder.parentNode) {
+                        if (draggedElement && placeholder && placeholder.parentNode) {
                             placeholder.parentNode.insertBefore(draggedElement, placeholder);
                             placeholder.parentNode.removeChild(placeholder);
                             
@@ -133,6 +134,20 @@
                             updateTodoOrder();
                         }
                     });
+                    
+                    // Add dragenter event to help with drop zones
+                    item.addEventListener('dragenter', function(e) {
+                        e.preventDefault();
+                    });
+                });
+                
+                // Also add listeners to the grid itself for better drop handling
+                todoGrid.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                });
+                
+                todoGrid.addEventListener('drop', function(e) {
+                    e.preventDefault();
                 });
             }
             
