@@ -18,6 +18,12 @@ h2 {
     color: #333;
 }
 
+.heart-icon {
+    color: #000;
+    font-size: 1.2rem;
+    margin-left: 0.5rem;
+}
+
 /* Todo grid styles */
 .todo-grid {
     margin: 0 -0.5rem;
