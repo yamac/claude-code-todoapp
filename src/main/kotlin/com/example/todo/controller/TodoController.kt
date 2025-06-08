@@ -5,10 +5,13 @@ import com.example.todo.service.TodoService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.slf4j.LoggerFactory
 
 @RestController
 @RequestMapping("/api/todos")
 class TodoController(private val todoService: TodoService) {
+    
+    private val logger = LoggerFactory.getLogger(TodoController::class.java)
 
     @GetMapping
     fun getAllTodos(): List<Todo> {
@@ -47,6 +50,18 @@ class TodoController(private val todoService: TodoService) {
             ResponseEntity.noContent().build()
         } else {
             ResponseEntity.notFound().build()
+        }
+    }
+    
+    @PostMapping("/reorder")
+    fun reorderTodos(@RequestBody todoIds: List<Long>): ResponseEntity<Map<String, String>> {
+        logger.info("Received reorder request for todos: $todoIds")
+        return if (todoService.reorderTodos(todoIds)) {
+            logger.info("Reorder successful")
+            ResponseEntity.ok(mapOf("message" to "Reordered successfully"))
+        } else {
+            logger.error("Reorder failed")
+            ResponseEntity.badRequest().body(mapOf("error" to "Failed to reorder todos"))
         }
     }
 }

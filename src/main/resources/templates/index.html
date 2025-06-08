@@ -15,9 +15,12 @@
                             </a>
                         </div>
                         
-                        <div class="row todo-grid" th:if="${!todos.isEmpty()}">
-                            <div class="col-lg-6 col-md-12 mb-3" th:each="todo : ${todos}">
+                        <div class="row todo-grid" id="todoGrid" th:if="${!todos.isEmpty()}">
+                            <div class="col-lg-6 col-md-12 mb-3 todo-item" th:each="todo : ${todos}" th:data-id="${todo.id}" draggable="true">
                                 <div class="todo-card" th:classappend="${todo.completed ? 'completed' : ''}">
+                                    <div class="drag-handle" title="Drag to reorder">
+                                        <i class="bi bi-grip-vertical"></i>
+                                    </div>
                                     <div class="todo-checkbox">
                                         <form th:action="@{/todo/{id}/toggle(id=${todo.id})}" method="post">
                                             <button type="submit" class="checkbox-button">
