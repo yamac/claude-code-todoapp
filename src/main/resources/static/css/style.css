@@ -82,7 +82,8 @@ h2 {
 
 /* Dragging state */
 .todo-item {
-    cursor: move;
+    cursor: grab;
+    user-select: none;
 }
 
 .todo-item:hover {
@@ -93,10 +94,15 @@ h2 {
     cursor: grabbing;
 }
 
+.todo-item[draggable="true"] {
+    cursor: grab;
+}
+
 .todo-item.dragging {
     opacity: 0.5;
     transform: rotate(2deg);
     transition: none;
+    cursor: grabbing;
 }
 
 .todo-item.dragging .todo-card {

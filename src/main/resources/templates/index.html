@@ -70,120 +70,112 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing drag and drop');
             const todoGrid = document.getElementById('todoGrid');
-            if (!todoGrid) return;
+            if (!todoGrid) {
+                console.log('todoGrid not found');
+                return;
+            }
             
             let draggedElement = null;
-            let placeholder = null;
             
-            // Add drag and drop event listeners to all todo items
+            // Simple drag and drop implementation
             function addDragListeners() {
                 const todoItems = todoGrid.querySelectorAll('.todo-item');
+                console.log('Found', todoItems.length, 'todo items');
                 
                 todoItems.forEach((item, index) => {
+                    console.log('Adding listeners to item', index, 'with ID', item.getAttribute('data-id'));
+                    
                     item.addEventListener('dragstart', function(e) {
-                        console.log('Drag started for:', this.getAttribute('data-id'));
+                        console.log('=== DRAG START ===');
+                        console.log('Dragging item with ID:', this.getAttribute('data-id'));
                         draggedElement = this;
-                        this.classList.add('dragging');
-                        
+                        this.style.opacity = '0.5';
                         e.dataTransfer.effectAllowed = 'move';
-                        e.dataTransfer.setData('text/plain', this.getAttribute('data-id'));
                     });
                     
                     item.addEventListener('dragend', function(e) {
-                        console.log('Drag ended');
-                        this.classList.remove('dragging');
-                        
-                        // Clean up any placeholder
-                        const existingPlaceholder = todoGrid.querySelector('.drag-placeholder');
-                        if (existingPlaceholder) {
-                            existingPlaceholder.remove();
-                        }
-                        
+                        console.log('=== DRAG END ===');
+                        this.style.opacity = '';
                         draggedElement = null;
                     });
                     
                     item.addEventListener('dragover', function(e) {
                         e.preventDefault();
-                        e.dataTransfer.dropEffect = 'move';
-                        
-                        if (this !== draggedElement) {
-                            const rect = this.getBoundingClientRect();
-                            const midY = rect.top + rect.height / 2;
-                            
-                            // Remove existing placeholder
-                            const existingPlaceholder = todoGrid.querySelector('.drag-placeholder');
-                            if (existingPlaceholder) {
-                                existingPlaceholder.remove();
-                            }
-                            
-                            // Create new placeholder
-                            placeholder = document.createElement('div');
-                            placeholder.className = 'col-lg-6 col-md-12 mb-3 drag-placeholder';
-                            placeholder.innerHTML = '<div class="todo-card placeholder-card">Drop here</div>';
-                            
-                            if (e.clientY < midY) {
-                                this.parentNode.insertBefore(placeholder, this);
+                        if (draggedElement && draggedElement !== this) {
+                            const afterElement = getDragAfterElement(todoGrid, e.clientY);
+                            if (afterElement == null) {
+                                todoGrid.appendChild(draggedElement);
                             } else {
-                                this.parentNode.insertBefore(placeholder, this.nextSibling);
+                                todoGrid.insertBefore(draggedElement, afterElement);
                             }
                         }
                     });
                     
                     item.addEventListener('drop', function(e) {
                         e.preventDefault();
-                        console.log('Drop occurred on:', this.getAttribute('data-id'));
+                        console.log('=== DROP EVENT ===');
+                        console.log('Dropped on item with ID:', this.getAttribute('data-id'));
                         
-                        if (draggedElement && draggedElement !== this) {
-                            const rect = this.getBoundingClientRect();
-                            const midY = rect.top + rect.height / 2;
-                            
-                            if (e.clientY < midY) {
-                                this.parentNode.insertBefore(draggedElement, this);
-                            } else {
-                                this.parentNode.insertBefore(draggedElement, this.nextSibling);
-                            }
-                            
-                            console.log('Calling updateTodoOrder after drop');
-                            // Small delay to ensure DOM is updated
+                        if (draggedElement) {
+                            console.log('Calling updateTodoOrder after successful drop');
                             setTimeout(() => {
                                 updateTodoOrder();
-                            }, 50);
+                            }, 100);
                         }
-                    });
-                    
-                    item.addEventListener('dragenter', function(e) {
-                        e.preventDefault();
                     });
                 });
                 
-                // Add listeners to the grid for general drop handling
+                // Grid level events
                 todoGrid.addEventListener('dragover', function(e) {
                     e.preventDefault();
                 });
                 
                 todoGrid.addEventListener('drop', function(e) {
                     e.preventDefault();
-                    console.log('Drop on grid');
-                    
-                    // Clean up placeholder
-                    const existingPlaceholder = todoGrid.querySelector('.drag-placeholder');
-                    if (existingPlaceholder) {
-                        existingPlaceholder.remove();
+                    console.log('=== GRID DROP ===');
+                    if (draggedElement) {
+                        console.log('Grid drop - calling updateTodoOrder');
+                        setTimeout(() => {
+                            updateTodoOrder();
+                        }, 100);
                     }
                 });
             }
             
+            function getDragAfterElement(container, y) {
+                const draggableElements = [...container.querySelectorAll('.todo-item:not(.dragging)')];
+                
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+                    
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+            
             function updateTodoOrder() {
-                const todoItems = todoGrid.querySelectorAll('.todo-item:not(.drag-placeholder)');
-                const todoIds = Array.from(todoItems).map(item => {
+                console.log('=== UPDATE TODO ORDER ===');
+                const todoItems = todoGrid.querySelectorAll('.todo-item');
+                console.log('Found', todoItems.length, 'todo items in DOM');
+                
+                const todoIds = Array.from(todoItems).map((item, index) => {
                     const id = parseInt(item.getAttribute('data-id'));
-                    console.log('Found todo item with ID:', id, 'element:', item);
+                    console.log(`Position ${index + 1}: Todo ID ${id}`);
                     return id;
                 });
                 
-                console.log('Current DOM order of todo IDs:', todoIds);
-                console.log('Sending reorder request with:', todoIds);
+                console.log('Final order to send to API:', todoIds);
+                
+                if (todoIds.length === 0) {
+                    console.log('No todos found, skipping API call');
+                    return;
+                }
                 
                 fetch('/api/todos/reorder', {
                     method: 'POST',
@@ -201,15 +193,14 @@
                     }
                 })
                 .then(data => {
-                    console.log('Reorder success:', data);
-                    // Reload the page to reflect the new order from database
+                    console.log('Reorder API success:', data);
+                    console.log('Reloading page to reflect changes...');
                     setTimeout(() => {
                         window.location.reload();
-                    }, 100);
+                    }, 200);
                 })
                 .catch(error => {
                     console.error('Error updating todo order:', error);
-                    // Revert the order change if API call fails
                     window.location.reload();
                 });
             }
