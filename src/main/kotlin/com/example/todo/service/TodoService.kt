@@ -22,9 +22,12 @@ class TodoService(private val todoMapper: TodoMapper) {
     }
 
     fun createTodo(todo: Todo): Todo {
-        val nextSortOrder = todoMapper.getNextSortOrder()
+        // Increment all existing sort orders to make room at the top
+        todoMapper.incrementAllSortOrders()
+        
+        // New todo gets sort order 1 (top position)
         val newTodo = todo.copy(
-            sortOrder = nextSortOrder,
+            sortOrder = 1,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
         )

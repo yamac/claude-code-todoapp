@@ -67,4 +67,7 @@ interface TodoMapper {
     
     @Select("SELECT COALESCE(MAX(sort_order), 0) + 1 FROM todos")
     fun getNextSortOrder(): Int
+    
+    @Update("UPDATE todos SET sort_order = sort_order + 1")
+    fun incrementAllSortOrders(): Int
 }
