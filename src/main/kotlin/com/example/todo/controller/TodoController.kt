@@ -49,4 +49,13 @@ class TodoController(private val todoService: TodoService) {
             ResponseEntity.notFound().build()
         }
     }
+    
+    @PostMapping("/reorder")
+    fun reorderTodos(@RequestBody todoIds: List<Long>): ResponseEntity<Map<String, String>> {
+        return if (todoService.reorderTodos(todoIds)) {
+            ResponseEntity.ok(mapOf("message" to "Reordered successfully"))
+        } else {
+            ResponseEntity.badRequest().body(mapOf("error" to "Failed to reorder todos"))
+        }
+    }
 }

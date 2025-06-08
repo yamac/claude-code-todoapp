@@ -7,6 +7,7 @@ data class Todo(
     val title: String,
     val description: String? = null,
     val completed: Boolean = false,
+    val sortOrder: Int = 0,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now()
 )

@@ -19,7 +19,9 @@ class TodoService(private val todoMapper: TodoMapper) {
     }
 
     fun createTodo(todo: Todo): Todo {
+        val nextSortOrder = todoMapper.getNextSortOrder()
         val newTodo = todo.copy(
+            sortOrder = nextSortOrder,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
         )
@@ -34,6 +36,7 @@ class TodoService(private val todoMapper: TodoMapper) {
             title = todo.title,
             description = todo.description,
             completed = todo.completed,
+            sortOrder = todo.sortOrder,
             updatedAt = LocalDateTime.now()
         )
         
@@ -43,5 +46,16 @@ class TodoService(private val todoMapper: TodoMapper) {
 
     fun deleteTodo(id: Long): Boolean {
         return todoMapper.delete(id) > 0
+    }
+    
+    fun reorderTodos(todoIds: List<Long>): Boolean {
+        return try {
+            todoIds.forEachIndexed { index, todoId ->
+                todoMapper.updateSortOrder(todoId, index + 1)
+            }
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 }
